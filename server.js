@@ -30,7 +30,15 @@ app.listen(port, function () {
 	console.log('listening on '+port);
 });
 
-mongoose.connect('mongodb://artariq:chitral@ds047040.mongolab.com:47040/rushiesmongodb');
+var env = process.env.NODE_ENV || 'development'
+if(env === 'production'){
+ dburi = 'mongodb://artariq:chitral@ds047040.mongolab.com:47040/rushiesmongodb';
+} else{
+ dburi = 'mongodb://127.0.0.1:27017/mydb';
+ console.log('connected to local db');
+}
+
+mongoose.connect(dburi);
 
 var db = mongoose.connection;
 db.on('error', function callback () {
